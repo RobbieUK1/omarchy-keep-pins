@@ -16,7 +16,7 @@ Ui.Panel {
     property int selected: 0
     readonly property string pluginDir: decodeURIComponent(String(Qt.resolvedUrl(".")).replace(/^file:\/\//, "").replace(/\/$/, ""))
     readonly property string fontFamily: bar ? bar.fontFamily : Style.font.family
-    implicitWidth: label.implicitWidth + Style.space(18)
+    implicitWidth: label.width + Style.space(18)
     implicitHeight: bar ? bar.barSize : 24
     Commons.Translations { id: strings; directory: Qt.resolvedUrl("i18n") }
 
@@ -60,8 +60,6 @@ Ui.Panel {
         source: Qt.resolvedUrl("assets/bulb.svg")
         width: Style.bar.iconFont
         height: Style.bar.iconFont
-        implicitWidth: Style.bar.iconFont
-        implicitHeight: Style.bar.iconFont
         fillMode: Image.PreserveAspectFit
         sourceSize.width: Math.ceil(width * 2)
         sourceSize.height: Math.ceil(height * 2)
