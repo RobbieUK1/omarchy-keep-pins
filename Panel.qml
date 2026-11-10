@@ -54,14 +54,17 @@ Ui.Panel {
     }
     Timer { interval: 30000; running: root.opened; repeat: true; onTriggered: { root.now = Date.now(); cache.reload() } }
     onOpenedChanged: if (opened) { now = Date.now(); cache.reload() }
-    Text {
+    Image {
         id: label
         anchors.centerIn: parent
-        textFormat: Text.PlainText
-        text: "\uf0eb"
-        color: "#fbbc04"
-        font.family: root.fontFamily
-        font.pixelSize: Style.bar.iconFont
+        source: Qt.resolvedUrl("assets/bulb.svg")
+        width: Style.bar.iconFont
+        height: Style.bar.iconFont
+        implicitWidth: Style.bar.iconFont
+        implicitHeight: Style.bar.iconFont
+        fillMode: Image.PreserveAspectFit
+        sourceSize.width: Math.ceil(width * 2)
+        sourceSize.height: Math.ceil(height * 2)
     }
     MouseArea {
         anchors.fill: parent
