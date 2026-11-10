@@ -22,7 +22,9 @@ Ui.Panel {
 
     function launch(id) {
         var url = "https://keep.google.com/" + (accountPath === "/" ? "" : accountPath.slice(1))
-        if (id && /^[A-Za-z0-9._-]{1,160}$/.test(id)) url += "#NOTE/" + encodeURIComponent(id)
+        if (id && /^local_/.test(id)) {
+            url += "?omarchyNote=" + encodeURIComponent(id)
+        } else if (id && /^[A-Za-z0-9._-]{1,160}$/.test(id)) url += "#NOTE/" + encodeURIComponent(id)
         Quickshell.execDetached(["omarchy", "launch", "webapp", url])
         close()
     }

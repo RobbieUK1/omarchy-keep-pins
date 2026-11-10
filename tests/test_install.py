@@ -31,6 +31,22 @@ class InstallTests(unittest.TestCase):
             self.assertFalse((target/'__pycache__').exists())
             self.assertEqual(len(list((config/'omarchy/plugin-backups').iterdir())),1)
 
+    def test_legacy_duplicate_is_moved_out_of_plugin_discovery(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            config = Path(temporary)
+            legacy = config/'omarchy/plugins/robbie.keep-pins.backup-old'
+            legacy.mkdir(parents=True)
+            (legacy/'manifest.json').write_text(json.dumps({'id':'robbie.keep-pins'}))
+            (legacy/'precious.txt').write_text('preserve me')
+            subprocess.run(['python3',str(ROOT/'install.py')],check=True,
+                           env={**os.environ,'XDG_CONFIG_HOME':str(config)},stdout=subprocess.DEVNULL)
+            self.assertFalse(legacy.exists())
+            backups = list((config/'omarchy/plugin-backups').iterdir())
+            self.assertEqual(len(backups),1)
+            self.assertEqual((backups[0]/'precious.txt').read_text(),'preserve me')
+            manifest = json.loads((config/'omarchy/plugins/robbie.keep-pins/manifest.json').read_text())
+            self.assertEqual(manifest['entryPoints']['barWidget'],'KeepPins.qml')
+
     def test_bad_configuration_is_not_overwritten(self):
         with tempfile.TemporaryDirectory() as temporary:
             config = Path(temporary)

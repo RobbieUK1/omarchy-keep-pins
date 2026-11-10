@@ -28,9 +28,26 @@ def validate(data):
             raise ValueError('Invalid text')
         seen.add(ident)
         notes.append({'id': ident, 'title': title, 'text': body})
-    return {'notes': notes, 'accountPath': account, 'updated': int(time.time())}
+    result = {'notes': notes, 'accountPath': account, 'updated': int(time.time())}
+    diagnostic = data.get('diagnostics')
+    names = ('dataId', 'unpin', 'pin', 'unpinCapital', 'pressedPins', 'noteCards', 'titles', 'bodies', 'listItems', 'dialogs', 'navigation', 'requested', 'matched', 'clicked', 'noteOpen')
+    if isinstance(diagnostic, dict):
+        result['diagnostics'] = {name: diagnostic[name] for name in names
+                                 if type(diagnostic.get(name)) is int and 0 <= diagnostic[name] <= 10000}
+    if isinstance(diagnostic, dict) and isinstance(diagnostic.get('structure'), list):
+        structure = []
+        for card in diagnostic['structure'][:2]:
+            if not isinstance(card, list): continue
+            nodes = []
+            for node in card[:65]:
+                if not isinstance(node, dict): continue
+                nodes.append({key: node[key][:500] for key in ('tag','attributes','classes','role','pinLabel','pinTooltip')
+                              if isinstance(node.get(key), str)})
+            structure.append(nodes)
+        result.setdefault('diagnostics', {})['structure'] = structure
+    return result
 
-def save(data):
+def save(data, filename="notes.json"):
     folder = Path(os.environ.get('XDG_CACHE_HOME', str(Path.home()/'.cache'))) / 'omarchy-keep-pins'
     folder.mkdir(mode=0o700, parents=True, exist_ok=True)
     os.chmod(folder, 0o700)
@@ -38,7 +55,7 @@ def save(data):
     try:
         with os.fdopen(fd, 'w') as stream:
             json.dump(data, stream)
-        os.replace(name, folder/'notes.json')
+        os.replace(name, folder/filename)
     finally:
         if os.path.exists(name): os.unlink(name)
 
@@ -50,7 +67,12 @@ def main():
         if length > LIMIT: raise ValueError('Message too large')
         raw = sys.stdin.buffer.read(length)
         if len(raw) != length: raise ValueError('Incomplete message')
-        save(validate(json.loads(raw)))
+        incoming = json.loads(raw)
+        if isinstance(incoming, dict) and incoming.get('diagnosticsOnly') is True:
+            checked = validate({'notes': [], 'diagnostics': incoming.get('diagnostics')})
+            save({'diagnostics': checked.get('diagnostics', {}), 'updated': checked['updated']}, 'navigation.json' if checked.get('diagnostics', {}).get('navigation') == 1 else 'diagnostics.json')
+        else:
+            save(validate(incoming))
         reply = {'ok': True}
     except (ValueError, OSError, TypeError):
         reply = {'ok': False}

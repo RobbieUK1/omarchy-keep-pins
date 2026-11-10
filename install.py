@@ -31,6 +31,19 @@ def install():
     if not re.fullmatch('[a-p]{32}', extid) or extid != expected:
         raise ValueError('The companion ID does not match its public key')
     stamp = str(time.time_ns())
+    # Legacy installers created backups beside active plugins. Their duplicate
+    # manifests can override the working widget, so move them out of discovery.
+    if target.parent.exists():
+        for candidate in target.parent.iterdir():
+            if candidate == target or not candidate.is_dir(): continue
+            try:
+                manifest = json.loads((candidate/'manifest.json').read_text())
+            except (OSError, ValueError):
+                continue
+            if isinstance(manifest, dict) and manifest.get('id') == 'robbie.keep-pins':
+                backup = config/'omarchy/plugin-backups'/(candidate.name + '-legacy-' + stamp)
+                backup.parent.mkdir(parents=True, exist_ok=True)
+                shutil.move(str(candidate), str(backup))
     if source != target:
         if target.exists():
             backup = config/'omarchy/plugin-backups'/('robbie.keep-pins-' + stamp)
@@ -61,6 +74,8 @@ def install():
     print('Installed Keep Pins: look for the yellow light bulb in your bar.')
     print('One-time Chromium setup: chrome://extensions > Developer mode > Load unpacked')
     print('Choose this folder: ' + str(target/'companion'))
+    print('After updating: reload Omarchy Keep Pins at chrome://extensions and refresh Keep.')
+    print('If the bar retains the old version: omarchy restart shell')
     print('Then use Open Keep in the dropdown and reload Keep if it was already open.')
 
 

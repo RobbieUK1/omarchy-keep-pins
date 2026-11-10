@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Omarchy Keep Pins",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Pass pinned notes from the open Google Keep page to your local Omarchy dropdown.",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv5dlSDF9A/in56/zmffpKLWdJ7BXA71IHhOzUVZLC+ptkKf8nJAS9NSbrum8fsJJwiNYTYadKWpOisK2FP0uG9umEk2R9HsE1zUmmFstt8Nyc5pKp8eWgsGyOk1MqO8uoboS51+5WX773fzJUg3butGzdjE2uRceSeenGqQmITEmGo2zCGjCkHfiefkYDmJJlyp8TjvYPMNpy13rx1Is0wXL6mJwcchSTIbDUMNzpbsDyLj1IEjOQHDinwyP4xMRdbPGBW3U5STQLDe0ST57SNNmkUUqOpRnbRqlBiA94ehstfEhzhkpg7/F1YR/5V1ATpRoYZUXuZDBSql4l0hjfwIDAQAB",
   "permissions": [

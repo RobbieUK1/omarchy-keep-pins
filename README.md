@@ -5,7 +5,7 @@ A yellow light bulb in your bar opens a native, theme-aware dropdown of pinned G
 ## Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/RobbieUK1/omarchy-keep-pins/v1.1.0/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/RobbieUK1/omarchy-keep-pins/v1.2.0/install.sh | bash
 ```
 
 Run this as your normal desktop user, without sudo. Requires Omarchy with the Quickshell plugin system, Chromium, Python 3, curl and tar. The installer downloads the tagged release and includes the Chromium companion. To inspect the installer first, [read install.sh](install.sh). From a downloaded checkout, you can also run `python3 install.py`. The installer backs up an existing plugin and shell configuration, installs the widget and Chromium native messaging registration, and adds the widget to the right of the bar. No Python packages are required.
@@ -14,7 +14,7 @@ Then follow **Set up sync** in the dropdown: load `~/.config/omarchy/plugins/rob
 
 ## Chromium companion
 
-- [Download the companion extension ZIP](https://github.com/RobbieUK1/omarchy-keep-pins/releases/download/v1.1.0/keep-pins-chromium-v1.1.0.zip)
+- [Download the companion extension ZIP](https://github.com/RobbieUK1/omarchy-keep-pins/releases/download/v1.2.0/keep-pins-chromium-v1.2.0.zip)
 - [Browse the extension source](companion)
 - [Detailed setup guide](https://github.com/RobbieUK1/omarchy-keep-pins/blob/main/SETUP.html)
 
@@ -35,7 +35,17 @@ Checks occur on page changes and every 60 seconds while Keep is open. Disable/re
 
 This is a browser-page integration, not an official Google Keep API client. Google may change its DOM. English accessible pin labels are supported, with current CSS hooks as a fallback. Search, label, archive views and active note dialogs are ignored. A cache is not replaced until the main Notes page is recognized. This version targets Chromium, one Google account at a time, text previews only, up to 200 pinned notes. If multiple accounts are open, the last one to sync wins.
 
-Automated tests cover message validation, private cache writes, markup handling and extension extraction logic using fixtures. Live extraction against your signed-in Keep page must be verified after enabling the companion; it has not been verified during development.
+Automated tests cover message validation, private cache writes, markup handling and extension extraction logic using fixtures. Live synchronization and individual-note navigation were verified with the user on the current Keep layout.
+
+## Updating
+
+Run the installer again. It preserves the existing bar position, backs up the previous installation outside the active plugins folder, and moves legacy duplicate Keep Pins backups out of that folder. Reload **Omarchy Keep Pins** at `chrome://extensions`, then refresh Keep. If the bar still shows an older version after updating, run `omarchy restart shell`.
+
+## Opening individual notes
+
+Keep does not expose public IDs on every note card. Where an ID is available, the widget uses its direct note URL. Otherwise it opens a Keep app window with a local navigation marker; the companion matches the pinned card and opens it automatically. Keep the companion enabled in the same Chromium profile. This does not edit the note or fall back to an all-notes search.
+
+Local diagnostics contain page structure and navigation counts, without note contents. They are stored beside the notes cache as `diagnostics.json` and `navigation.json`. No diagnostic data is uploaded by the plugin.
 
 ## Development checks
 
