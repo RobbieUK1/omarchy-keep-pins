@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "robbie.keep-pins",
+  "name": "Keep Pins",
+  "version": "1.1.0",
+  "author": "Robbie",
+  "license": "MIT",
+  "description": "A simple dropdown of pinned Google Keep notes, synced locally from Chromium.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "Keep Pins",
+    "description": "Pinned Google Keep notes",
+    "category": "Productivity",
+    "defaultSection": "right",
+    "allowMultiple": false
+  }
+}

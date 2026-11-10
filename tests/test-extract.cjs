@@ -1,0 +1,13 @@
+const assert = require('node:assert/strict');
+const {extractPinned}=require('../companion/extract.js');
+const card={getAttribute:()=> 'abc-12', querySelector:(s)=>s.includes('Unpin')? {} : {textContent:s.includes('heading')?'<img src="https://invalid/">':'Note text'}};
+const doc={querySelector:s=>s.includes('dialog')?null:{}, querySelectorAll:()=>[card,card]};
+const location={hash:'',pathname:'/u/1/'};
+const result=extractPinned(doc,location);
+assert.equal(result.notes.length,1);
+assert.equal(result.notes[0].title,'<img src="https://invalid/">');
+assert.equal(result.accountPath,'/u/1/');
+assert.equal(extractPinned(doc,{...location,hash:'#archive'}),null);
+assert.equal(extractPinned({...doc,querySelector:()=>null},location),null);
+assert.equal(extractPinned({...doc,querySelectorAll:()=>[]},location).notes.length,0);
+console.log('Extraction fixture tests passed');

@@ -1,0 +1,12 @@
+{
+  "title": "Pinned Keep notes",
+  "open": "Open Keep ↗",
+  "setup": "Set up sync",
+  "waiting": "Enable the browser companion, then open Keep to sync your pinned notes.",
+  "empty": "No pinned notes. Pin a note in Keep to see it here.",
+  "untitled": "Untitled note",
+  "cached": "Saved locally · open Keep to update",
+  "live": "Synced from your Keep window",
+  "tooltip": "Google Keep · pinned notes",
+  "close": "Close"
+}

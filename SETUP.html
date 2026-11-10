@@ -1,0 +1,13 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Keep Pins setup</title>
+<style>body{font:17px/1.6 system-ui;background:#191b20;color:#eee;max-width:760px;margin:60px auto;padding:24px}h1{color:#fbbc04}code{overflow-wrap:anywhere;background:#30343c;padding:3px 6px;border-radius:4px}li{margin:20px 0}a{color:#fbbc04}</style>
+<h1>💡 Keep Pins</h1><p>Your pinned Google Keep notes in the Omarchy bar. The <b>Open Keep ↗</b> button opens Keep in its own web app window.</p>
+<p><a href="https://github.com/RobbieUK1/omarchy-keep-pins">GitHub repository &amp; installer</a> · <a href="https://github.com/RobbieUK1/omarchy-keep-pins/releases/download/v1.1.0/keep-pins-chromium-v1.1.0.zip">Download Chromium companion ZIP</a></p><h2>One-time Chromium setup</h2><ol>
+<li>Open <code>chrome://extensions</code> in Chromium and switch on <b>Developer mode</b>.</li>
+<li>Click <b>Load unpacked</b> and choose <code>~/.config/omarchy/plugins/robbie.keep-pins/companion</code> (use Ctrl+L to enter the full folder path).</li>
+<li>Use <b>Open Keep ↗</b> in the dropdown. Sign in to Google yourself if prompted. If Keep was already open, reload its window once.</li>
+<li>Keep the main <b>Notes</b> page open. Pinned titles and previews sync locally when the page changes, with a check every minute. Search, labels, archives and open note dialogs do not replace the cache.</li></ol>
+<p>No password or account token is collected. The companion can read Keep pages and send pinned titles and text to a local receiver. The dropdown stores these previews in your private local cache; it never edits notes. The browser companion can be disabled on the extensions page to stop syncing.</p>
+<p>This uses Keep's web page structure, which Google can change. Initial extraction supports English pin labels and a CSS fallback. Sync needs an open signed-in Keep page in the Chromium profile where the companion is enabled. Other browsers and multiple simultaneous Google accounts are not supported in this first version: the latest synced account is shown.</p>
+<p>If the companion icon shows <b>!</b>, the local receiver is missing or unavailable. Re-run the installer. If nothing appears, use Keep's English interface and main Notes page, then reload. Cached previews remain visible when Keep is closed; their status changes after two minutes. Image and drawing attachments are not downloaded.</p>
+<p><a href="https://keep.google.com/">Open Google Keep website</a></p>
+</html>
